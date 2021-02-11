@@ -1,0 +1,1104 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Networking Demos - 2 VPCs"
+
+Metadata:
+  "AWS::CloudFormation::Interface":
+    ParameterGroups:
+      - Label:
+          default: "VPC Parameters"
+        Parameters:
+          - AvailabilityZoneA
+          - AvailabilityZoneB
+
+Parameters:
+  RegionalCIDR:
+    Type: String
+    Description: Provide a/13 CIDR space
+    Default: 10.64.0.0/13
+    AllowedValues:
+      - "10.0.0.0/13"
+      - "10.8.0.0/13"
+      - "10.16.0.0/13"
+      - "10.24.0.0/13"
+      - "10.64.0.0/13"
+  AvailabilityZoneA:
+    Description: Availability Zone 1
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: us-west-1a
+  AvailabilityZoneB:
+    Description: Availability Zone 2
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: us-west-1c
+  ProjectName:
+    Description: "Project Name for All Stacks."
+    Type: String
+    Default: "NET"
+  DeployServers:
+    Type: String
+    Description: Deploy a Test Server in each VPC
+    Default: "Yes"
+    AllowedValues:
+      - "Yes"
+      - "No"
+  DeploySSMEndpoints:
+    Type: String
+    Description: Must have Endpoint or Access to NAT Gateway to us Session Manager
+    Default: "Yes"
+    AllowedValues:
+      - "Yes"
+      - "No"
+
+Conditions:
+  CreateServer: !Equals [!Ref DeployServers, "Yes"]
+  CreateSSMEndpoints: !Equals [!Ref DeploySSMEndpoints, "Yes"]
+
+Mappings:
+  RegionMap:
+    "eu-north-1":
+      AMI: "ami-3f36be41"
+    "ap-south-1":
+      AMI: "ami-0d2692b6acea72ee6"
+    "eu-west-3":
+      AMI: "ami-0adcddd3324248c4c"
+    "eu-west-2":
+      AMI: "ami-0d8e27447ec2c8410"
+    "eu-west-1":
+      AMI: "ami-0bbc25e23a7640b9b"
+    "ap-northeast-3":
+      AMI: "ami-0ee933a7f81beb045"
+    "ap-northeast-2":
+      AMI: "ami-095ca789e0549777d"
+    "ap-northeast-1":
+      AMI: "ami-0c3fd0f5d33134a76"
+    "sa-east-1":
+      AMI: "ami-058943e7d9b9cabfb"
+    "ca-central-1":
+      AMI: "ami-0d4ae09ec9361d8ac"
+    "ap-southeast-1":
+      AMI: "ami-01f7527546b557442"
+    "ap-southeast-2":
+      AMI: "ami-0dc96254d5535925f"
+    "eu-central-1":
+      AMI: "ami-0cc293023f983ed53"
+    "us-east-1":
+      AMI: "ami-0b898040803850657"
+    "us-east-2":
+      AMI: "ami-0d8f6eb4f641ef691"
+    "us-west-1":
+      AMI: "ami-056ee704806822732"
+    "us-west-2":
+      AMI: "ami-082b5a644766e0e6f"
+
+Resources:
+  #VPC64
+  VPC64:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Select [0, !Cidr [Ref: RegionalCIDR, 8, 16]]
+      EnableDnsSupport: "true"
+      EnableDnsHostnames: "true"
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 0
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+        - Key: project
+          Value: Networking Demos by GSeib
+
+  VPC64PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC64
+      CidrBlock: !Select [2, !Cidr [!GetAtt VPC64.CidrBlock, 6, 8]]
+      AvailabilityZone:
+        Ref: AvailabilityZoneA
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 0
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "PrivateA Subnet"
+
+  VPC64PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC64
+      CidrBlock: !Select [3, !Cidr [!GetAtt VPC64.CidrBlock, 6, 8]]
+      AvailabilityZone:
+        Ref: AvailabilityZoneB
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 0
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "PrivateB Subnet"
+
+  VPC64PrivateSubnetRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPC64
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 0
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "Private Route Table"
+
+  VPC64PrivateASubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPC64PrivateSubnetRouteTable
+      SubnetId:
+        Ref: VPC64PrivateSubnetA
+
+  VPC64PrivateBSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPC64PrivateSubnetRouteTable
+      SubnetId:
+        Ref: VPC64PrivateSubnetB
+
+  VPC64ServerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join
+        - ""
+        - - VPC
+          - !Select
+            - 1
+            - !Split
+              - "."
+              - !Select
+                - 0
+                - !Cidr
+                  - Ref: "RegionalCIDR"
+                  - 8
+                  - 16
+          - "-"
+          - "SSMRole"
+          - "-"
+          - Ref: AWS::Region
+      Path: "/"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+
+  VPC64InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+        - !Ref VPC64ServerRole
+
+  #ICMP is allowed from anywhere within 10.0.0.0 address space (not recommended for real environments)
+  VPC64Ec2SecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Open-up ports for ICMP and SSH from 10.x.x.x
+      GroupName: !Join
+        - ""
+        - - VPC
+          - !Select
+            - 1
+            - !Split
+              - "."
+              - !Select
+                - 0
+                - !Cidr
+                  - Ref: "RegionalCIDR"
+                  - 8
+                  - 16
+          - "-"
+          - "EC2-SG"
+      VpcId:
+        Ref: VPC64
+      SecurityGroupIngress:
+        - IpProtocol: icmp
+          CidrIp: 10.0.0.0/8
+          FromPort: "-1"
+          ToPort: "-1"
+        - IpProtocol: tcp
+          FromPort: "22"
+          ToPort: "22"
+          CidrIp: 10.0.0.0/8
+        - IpProtocol: tcp
+          FromPort: "80"
+          ToPort: "80"
+          CidrIp: 10.0.0.0/8
+
+  VPC64ServerEc2:
+    Type: AWS::EC2::Instance
+    Condition: CreateServer
+    DependsOn: VPC64PrivateSubnetA
+    Properties:
+      SubnetId:
+        Ref: VPC64PrivateSubnetA
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
+      PrivateIpAddress: !Join
+        - "."
+        - - !Select [
+              0,
+              !Split [".", !Select [2, !Cidr [!GetAtt VPC64.CidrBlock, 6, 8]]],
+            ]
+          - !Select [
+              1,
+              !Split [".", !Select [2, !Cidr [!GetAtt VPC64.CidrBlock, 6, 8]]],
+            ]
+          - !Select [
+              2,
+              !Split [".", !Select [2, !Cidr [!GetAtt VPC64.CidrBlock, 6, 8]]],
+            ]
+          - "10"
+      InstanceType: t2.micro
+      SecurityGroupIds:
+        - Ref: VPC64Ec2SecGroup
+      IamInstanceProfile:
+        Ref: VPC64InstanceProfile
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 0
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "WebServer"
+
+  VPC64EndpointSecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Condition: CreateSSMEndpoints
+    Properties:
+      GroupDescription: Open-up ports for local VPC
+      GroupName: !Join
+        - ""
+        - - VPC
+          - !Select
+            - 1
+            - !Split
+              - "."
+              - !Select
+                - 0
+                - !Cidr
+                  - Ref: "RegionalCIDR"
+                  - 8
+                  - 16
+          - "-"
+          - "Endpoint-SG"
+      VpcId:
+        Ref: VPC64
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: "443"
+          ToPort: "443"
+          CidrIp: !Select [0, !Cidr [Ref: RegionalCIDR, 4, 16]]
+
+  VPC64SSMEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Condition: CreateSSMEndpoints
+    Properties:
+      VpcId:
+        Ref: VPC64
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.ssm"
+      VpcEndpointType: Interface
+      PrivateDnsEnabled: True
+      SubnetIds:
+        - Ref: VPC64PrivateSubnetA
+        - Ref: VPC64PrivateSubnetB
+      SecurityGroupIds:
+        - Ref: VPC64EndpointSecGroup
+
+  VPC64SSMMEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Condition: CreateSSMEndpoints
+    Properties:
+      VpcId:
+        Ref: VPC64
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.ssmmessages"
+      VpcEndpointType: Interface
+      PrivateDnsEnabled: True
+      SubnetIds:
+        - Ref: VPC64PrivateSubnetA
+        - Ref: VPC64PrivateSubnetB
+      SecurityGroupIds:
+        - Ref: VPC64EndpointSecGroup
+  #VPC65 Public Subnets
+  VPC64PublicSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC64
+      CidrBlock: !Select [0, !Cidr [!GetAtt VPC64.CidrBlock, 6, 8]]
+      AvailabilityZone:
+        Ref: AvailabilityZoneA
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 0
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "PublicA Subnet"
+
+  VPC64PublicSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC64
+      CidrBlock: !Select [1, !Cidr [!GetAtt VPC64.CidrBlock, 6, 8]]
+      AvailabilityZone:
+        Ref: AvailabilityZoneB
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 0
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "PublicB Subnet"
+
+  VPC64PublicSubnetRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPC64
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 0
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "Public Route Table"
+
+  VPC64PublicASubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPC64PublicSubnetRouteTable
+      SubnetId:
+        Ref: VPC64PublicSubnetA
+
+  VPC64PublicBSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPC64PublicSubnetRouteTable
+      SubnetId:
+        Ref: VPC64PublicSubnetB
+
+  # VPC64 Gateways
+  VPC64InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 0
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "IGW"
+
+  VPC64AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: VPC64
+      InternetGatewayId:
+        Ref: VPC64InternetGateway
+
+  VPC64DirectInternetRoute:
+    Type: AWS::EC2::Route
+    DependsOn: VPC64InternetGateway
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: VPC64InternetGateway
+      RouteTableId:
+        Ref: VPC64PublicSubnetRouteTable
+
+  VPC64NATEIP:
+    Type: "AWS::EC2::EIP"
+    Properties:
+      Domain: vpc
+
+  VPC64NATGateway:
+    DependsOn: VPC64AttachGateway
+    Type: "AWS::EC2::NatGateway"
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - VPC64NATEIP
+          - AllocationId
+      SubnetId:
+        Ref: VPC64PublicSubnetA
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 0
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "NAT Gateway"
+
+  VPC64NATInternetRoutePrivate:
+    Type: AWS::EC2::Route
+    DependsOn: VPC64InternetGateway
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: VPC64NATGateway
+      RouteTableId:
+        Ref: VPC64PrivateSubnetRouteTable
+
+  #VPC 2
+  VPC65:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Select [1, !Cidr [Ref: RegionalCIDR, 4, 16]]
+      EnableDnsSupport: "true"
+      EnableDnsHostnames: "true"
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 1
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+        - Key: project
+          Value: Networking Demos by GSeib
+
+  VPC65PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC65
+      CidrBlock: !Select [2, !Cidr [!GetAtt VPC65.CidrBlock, 6, 8]]
+      AvailabilityZone:
+        Ref: AvailabilityZoneA
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 1
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "PrivateA Subnet"
+
+  VPC65PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC65
+      CidrBlock: !Select [3, !Cidr [!GetAtt VPC65.CidrBlock, 6, 8]]
+      AvailabilityZone:
+        Ref: AvailabilityZoneB
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 1
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "PrivateB Subnet"
+
+  VPC65PrivateSubnetRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPC65
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 1
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "Private Route Table"
+
+  VPC65PrivateASubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPC65PrivateSubnetRouteTable
+      SubnetId:
+        Ref: VPC65PrivateSubnetA
+
+  VPC65PrivateBSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPC65PrivateSubnetRouteTable
+      SubnetId:
+        Ref: VPC65PrivateSubnetB
+
+  VPC65ServerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join
+        - ""
+        - - VPC
+          - !Select
+            - 1
+            - !Split
+              - "."
+              - !Select
+                - 1
+                - !Cidr
+                  - Ref: "RegionalCIDR"
+                  - 8
+                  - 16
+          - "-"
+          - "SSMRole"
+          - "-"
+          - Ref: AWS::Region
+      Path: "/"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+
+  VPC65InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+        - !Ref VPC65ServerRole
+
+  #ICMP is allowed from anywhere within 10.0.0.0 address space (not recommended for real environments)
+  VPC65Ec2SecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Open-up ports for ICMP and SSH from 10.x.x.x
+      GroupName: !Join
+        - ""
+        - - VPC
+          - !Select
+            - 1
+            - !Split
+              - "."
+              - !Select
+                - 1
+                - !Cidr
+                  - Ref: "RegionalCIDR"
+                  - 8
+                  - 16
+          - "-"
+          - "EC2-SG"
+      VpcId:
+        Ref: VPC65
+      SecurityGroupIngress:
+        - IpProtocol: icmp
+          CidrIp: 10.0.0.0/8
+          FromPort: "-1"
+          ToPort: "-1"
+        - IpProtocol: tcp
+          FromPort: "22"
+          ToPort: "22"
+          CidrIp: 10.0.0.0/8
+        - IpProtocol: tcp
+          FromPort: "80"
+          ToPort: "80"
+          CidrIp: 10.0.0.0/8
+
+  VPC65ServerEc2:
+    Type: AWS::EC2::Instance
+    DependsOn: VPC65PrivateSubnetA
+    Properties:
+      SubnetId:
+        Ref: VPC65PrivateSubnetA
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
+      PrivateIpAddress: !Join
+        - "."
+        - - !Select [
+              0,
+              !Split [".", !Select [2, !Cidr [!GetAtt VPC65.CidrBlock, 6, 8]]],
+            ]
+          - !Select [
+              1,
+              !Split [".", !Select [2, !Cidr [!GetAtt VPC65.CidrBlock, 6, 8]]],
+            ]
+          - !Select [
+              2,
+              !Split [".", !Select [2, !Cidr [!GetAtt VPC65.CidrBlock, 6, 8]]],
+            ]
+          - "10"
+      InstanceType: t2.micro
+      SecurityGroupIds:
+        - Ref: VPC65Ec2SecGroup
+      IamInstanceProfile:
+        Ref: VPC65InstanceProfile
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 1
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "WebServer"
+
+  VPC65EndpointSecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Open-up ports for local VPC
+      GroupName: !Join
+        - ""
+        - - VPC
+          - !Select
+            - 1
+            - !Split
+              - "."
+              - !Select
+                - 1
+                - !Cidr
+                  - Ref: "RegionalCIDR"
+                  - 8
+                  - 16
+          - "-"
+          - "Endpoint-SG"
+      VpcId:
+        Ref: VPC65
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: "443"
+          ToPort: "443"
+          CidrIp: !Select [1, !Cidr [Ref: RegionalCIDR, 4, 16]]
+
+  VPC65SSMEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      VpcId:
+        Ref: VPC65
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.ssm"
+      VpcEndpointType: Interface
+      PrivateDnsEnabled: True
+      SubnetIds:
+        - Ref: VPC65PrivateSubnetA
+        - Ref: VPC65PrivateSubnetB
+      SecurityGroupIds:
+        - Ref: VPC65EndpointSecGroup
+
+  VPC65SSMMEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      VpcId:
+        Ref: VPC65
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.ssmmessages"
+      VpcEndpointType: Interface
+      PrivateDnsEnabled: True
+      SubnetIds:
+        - Ref: VPC65PrivateSubnetA
+        - Ref: VPC65PrivateSubnetB
+      SecurityGroupIds:
+        - Ref: VPC65EndpointSecGroup
+
+  # VPC65 Public Subnets
+  VPC65PublicSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC65
+      CidrBlock: !Select [0, !Cidr [!GetAtt VPC65.CidrBlock, 6, 8]]
+      AvailabilityZone:
+        Ref: AvailabilityZoneA
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 1
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "PublicA Subnet"
+
+  VPC65PublicSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC65
+      CidrBlock: !Select [1, !Cidr [!GetAtt VPC65.CidrBlock, 6, 8]]
+      AvailabilityZone:
+        Ref: AvailabilityZoneB
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 1
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "PublicB Subnet"
+
+  VPC65PublicSubnetRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPC65
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 1
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "Public Route Table"
+
+  VPC65PublicASubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPC65PublicSubnetRouteTable
+      SubnetId:
+        Ref: VPC65PublicSubnetA
+
+  VPC65PublicBSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPC65PublicSubnetRouteTable
+      SubnetId:
+        Ref: VPC65PublicSubnetB
+
+  # VPC65 Gateways
+  VPC65InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 1
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "IGW"
+
+  VPC65AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: VPC65
+      InternetGatewayId:
+        Ref: VPC65InternetGateway
+
+  VPC65DirectInternetRoute:
+    Type: AWS::EC2::Route
+    DependsOn: VPC65InternetGateway
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: VPC65InternetGateway
+      RouteTableId:
+        Ref: VPC65PublicSubnetRouteTable
+
+  VPC65NATEIP:
+    Type: "AWS::EC2::EIP"
+    Properties:
+      Domain: vpc
+
+  VPC65NATGateway:
+    DependsOn: VPC65AttachGateway
+    Type: "AWS::EC2::NatGateway"
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - VPC65NATEIP
+          - AllocationId
+      SubnetId:
+        Ref: VPC65PublicSubnetA
+      Tags:
+        - Key: Name
+          Value: !Join
+            - ""
+            - - VPC
+              - !Select
+                - 1
+                - !Split
+                  - "."
+                  - !Select
+                    - 1
+                    - !Cidr
+                      - Ref: "RegionalCIDR"
+                      - 8
+                      - 16
+              - "-"
+              - "NAT Gateway"
+
+  VPC65NATInternetRoutePrivate:
+    Type: AWS::EC2::Route
+    DependsOn: VPC65InternetGateway
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: VPC65NATGateway
+      RouteTableId:
+        Ref: VPC65PrivateSubnetRouteTable
+
+Outputs:
+  # VPC64 Outputs
+  VPC64:
+    Description: "VPC64"
+    Value: !Ref VPC64
+    Export:
+      Name: !Sub "VPC64-${ProjectName}-VPC"
+
+  VPC64PrivateSubnetA:
+    Description: "VPC64 Private Subnet A"
+    Value: !Ref VPC64PrivateSubnetA
+    Export:
+      Name: !Sub "VPC64-${ProjectName}-PrivateSubnetA"
+  VPC64PrivateSubnetB:
+    Description: "VPC64 Private Subnet B"
+    Value: !Ref VPC64PrivateSubnetB
+    Export:
+      Name: !Sub "VPC64-${ProjectName}-PrivateSubnetB"
+
+  VPC64PrivateSubnetRouteTable:
+    Description: "VPC64 Private Route Table"
+    Value: !Ref VPC64PrivateSubnetRouteTable
+    Export:
+      Name: !Sub "VPC64-${ProjectName}-PrivateRouteTable"
+
+  VPC64Server:
+    Description: "VPC64 EC2 IP address"
+    Value: !GetAtt VPC64ServerEc2.PrivateIp
+    Export:
+      Name: !Sub "VPC64-${ProjectName}-ServerIP"
+
+  # VPC65 Outputs
+  VPC65:
+    Description: "VPC65"
+    Value: !Ref VPC65
+    Export:
+      Name: !Sub "VPC65-${ProjectName}-VPC"
+  VPC65PrivateSubnetA:
+    Description: "VPC65 Private Subnet A"
+    Value: !Ref VPC65PrivateSubnetA
+    Export:
+      Name: !Sub "VPC65-${ProjectName}-PrivateSubnetA"
+  VPC65PrivateSubnetB:
+    Description: "VPC65 Private Subnet B"
+    Value: !Ref VPC65PrivateSubnetB
+    Export:
+      Name: !Sub "VPC65-${ProjectName}-PrivateSubnetB"
+
+  VPC65PrivateSubnetRouteTable:
+    Description: "VPC65 Private Route Table"
+    Value: !Ref VPC65PrivateSubnetRouteTable
+    Export:
+      Name: !Sub "VPC65-${ProjectName}-PrivateRouteTable"
+
+  VPC65Server:
+    Description: "VPC65 EC2 IP address"
+    Value: !GetAtt VPC65ServerEc2.PrivateIp
+    Export:
+      Name: !Sub "VPC65-${ProjectName}-ServerIP"
+
+  RegionalCIDR:
+    Description: "Regional CIDR"
+    Value: !Ref RegionalCIDR
+    Export:
+      Name: !Sub "${ProjectName}-RegionalCIDR"

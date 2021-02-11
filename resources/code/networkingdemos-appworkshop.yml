@@ -1,0 +1,89 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Networking Demos - app workshop"
+
+Metadata:
+  "AWS::CloudFormation::Interface":
+    ParameterGroups:
+      - Label:
+          default: "VPC Parameters"
+        Parameters:
+          - AvailabilityZoneA
+          - AvailabilityZoneB
+          - VPCCIDR
+      - Label:
+          default: "Deployment Options"
+        Parameters:
+          - S3TemplatePath
+          - DeployServers
+          - DeploySSMEndpoints
+
+Parameters:
+  AvailabilityZoneA:
+    Description: Availability Zone 1
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: us-east-1a
+  AvailabilityZoneB:
+    Description: Availability Zone 2
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: us-east-1b
+  RegionalASN:
+    Type: String
+    Description: BGP ASN, suggested to use 650xx, where xx is the Regional CIDR used. (10.8.0.0/13 would be ASN 65108)
+    Default: "65100"
+    AllowedValues:
+      - "65100"
+      - "65108"
+      - "65116"
+      - "65124"
+  DeployServers:
+    Type: String
+    Description: Deploy a Test Server in each VPC
+    Default: "Yes"
+    AllowedValues:
+      - "Yes"
+      - "No"
+  DeploySSMEndpoints:
+    Type: String
+    Description: Must have Endpoint or Access to NAT Gateway to us Session Manager
+    Default: "Yes"
+    AllowedValues:
+      - "Yes"
+      - "No"
+  S3TemplatePath:
+    Description: S3 HTTP path with prefix to templates (Should end with a /)
+    Type: String
+    Default: "https://appshare-resourcesbucket-o54kvu0pf4du.s3.amazonaws.com/"
+  ProjectName:
+    Description: "Project Name for All Stacks."
+    Type: String
+    Default: "Apps"
+
+Resources:
+  VPCsStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join
+        - ""
+        - - !Ref S3TemplatePath
+          - networkingdemos-appvpcs.yml
+      TimeoutInMinutes: "10"
+      Parameters:
+        RegionalCIDR: 10.64.0.0/13
+        AvailabilityZoneA: !Ref AvailabilityZoneA
+        AvailabilityZoneB: !Ref AvailabilityZoneB
+        ProjectName: !Ref ProjectName
+        DeployServers: !Ref DeployServers
+        DeploySSMEndpoints: !Ref DeploySSMEndpoints
+
+  TGWStack:
+    DependsOn: VPCsStack
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join
+        - ""
+        - - !Ref S3TemplatePath
+          - networkingdemos-apptgw.yml
+      TimeoutInMinutes: "10"
+      Parameters:
+        ProjectName: !Ref ProjectName
+        RegionalASN: !Ref RegionalASN
