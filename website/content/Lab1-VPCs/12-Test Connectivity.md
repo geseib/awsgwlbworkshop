@@ -76,3 +76,4 @@ We also want to test from our laptop that we can get to our internet facing appl
 If you have any issues, verify that the Cloudformation stack has complete. It can take a few minutes to finish the automation and the EC2 instance to finish booting up and running through the bootstrapping process.
 
 ## You have completed the Lab.
+
