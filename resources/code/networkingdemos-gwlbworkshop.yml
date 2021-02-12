@@ -562,7 +562,7 @@ Resources:
                 /opt/aws/bin/ec2-metadata -o | /bin/cut -d" " -f2 >> /var/www/html/index.php
                 /bin/echo -n "Availability Zone: " >> /var/www/html/index.php
                 /opt/aws/bin/ec2-metadata -z | /bin/cut -d" " -f2 >> /var/www/html/index.php
-                /bin/echo "</h2><p>Stack Name: ${ProjectName}</p>" >> /var/www/html/index.php
+                /bin/echo "</h2><p>Stack Name: ${thisStack}</p>" >> /var/www/html/index.php
                 /bin/echo "<p>remote ip is <?php \$ip = isset(\$_SERVER['HTTP_CLIENT_IP']) ? \$_SERVER['HTTP_CLIENT_IP'] : isset(\$_SERVER['HTTP_X_FORWARDED_FOR']) ? \$_SERVER['HTTP_X_FORWARDED_FOR'] : \$_SERVER['REMOTE_ADDR']; echo \$ip;?>" >> /var/www/html/index.php
                 /bin/echo "</p>" >> /var/www/html/index.php
                 /bin/echo "remote tcp port is <?php \$port = \$_SERVER['REMOTE_PORT']; echo \$port;?>" >> /var/www/html/index.php
@@ -847,7 +847,7 @@ Resources:
                 /opt/aws/bin/ec2-metadata -o | /bin/cut -d" " -f2 >> /var/www/html/index.php
                 /bin/echo -n "Availability Zone: " >> /var/www/html/index.php
                 /opt/aws/bin/ec2-metadata -z | /bin/cut -d" " -f2 >> /var/www/html/index.php
-                /bin/echo "</h2><p>Stack Name: ${ProjectName}</p>" >> /var/www/html/index.php
+                /bin/echo "</h2><p>Stack Name: ${thisStack}</p>" >> /var/www/html/index.php
                 /bin/echo "<p>remote ip is <?php \$ip = isset(\$_SERVER['HTTP_CLIENT_IP']) ? \$_SERVER['HTTP_CLIENT_IP'] : isset(\$_SERVER['HTTP_X_FORWARDED_FOR']) ? \$_SERVER['HTTP_X_FORWARDED_FOR'] : \$_SERVER['REMOTE_ADDR']; echo \$ip;?>" >> /var/www/html/index.php
                 /bin/echo "</p>" >> /var/www/html/index.php
                 /bin/echo "remote tcp port is <?php \$port = \$_SERVER['REMOTE_PORT']; echo \$port;?>" >> /var/www/html/index.php
@@ -865,7 +865,7 @@ Resources:
 
                 /sbin/service httpd restart
 
-              - ProjectName: !Ref AWS::StackName
+              - thisStack: !Ref AWS::StackName
         InstanceType: t2.micro
         IamInstanceProfile:
           Name: !Ref WebInstanceProfile
@@ -1842,7 +1842,7 @@ Resources:
               /opt/aws/bin/ec2-metadata -o | /bin/cut -d" " -f2 >> /var/www/html/index.php
               /bin/echo -n "Availability Zone: " >> /var/www/html/index.php
               /opt/aws/bin/ec2-metadata -z | /bin/cut -d" " -f2 >> /var/www/html/index.php
-              /bin/echo "</h2><p>Stack Name: ${ProjectName}</p>" >> /var/www/html/index.php
+              /bin/echo "</h2><p>Stack Name: ${thisStack}</p>" >> /var/www/html/index.php
               /bin/echo "<p>remote ip is <?php \$ip = isset(\$_SERVER['HTTP_CLIENT_IP']) ? \$_SERVER['HTTP_CLIENT_IP'] : isset(\$_SERVER['HTTP_X_FORWARDED_FOR']) ? \$_SERVER['HTTP_X_FORWARDED_FOR'] : \$_SERVER['REMOTE_ADDR']; echo \$ip;?>" >> /var/www/html/index.php
               /bin/echo "</p>" >> /var/www/html/index.php
               /bin/echo "remote tcp port is <?php \$port = \$_SERVER['REMOTE_PORT']; echo \$port;?>" >> /var/www/html/index.php
