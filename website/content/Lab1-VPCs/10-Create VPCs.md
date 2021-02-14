@@ -28,7 +28,7 @@ You will need the following in the region you plan to deploy:
 
 1. Click on the CloudFormation Launch link below that corresponds to the AWS Region in which you want to deploy the workshop.
 
-   [![US East (N.Va.)](https://samdengler.github.io/cloudformation-launch-stack-button-svg/images/us-east-1.svg)(https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-0847cff6598da0a2f)
+   [![US East (N.Va.)](https://samdengler.github.io/cloudformation-launch-stack-button-svg/images/us-east-1.svg)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-0847cff6598da0a2f)
    [![US West (Oregon)](https://samdengler.github.io/cloudformation-launch-stack-button-svg/images/us-west-2.svg)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-0f8c3e2c1b7b4bcc9)
    [![EU West (Ireland)](https://samdengler.github.io/cloudformation-launch-stack-button-svg/images/eu-west-1.svg)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-00ad2b17de74dd860)
 
