@@ -8,7 +8,11 @@ weight = 30
 
 Lets protect our internet facing applications with the Palo Alto Firewalls.. Using **Network Load Balancer** not only provides availablity and scalability to our application, but we can use it to share our application to other VPCs via **AWS Privatelink**.
 
-![endpoint Diagram](/images/gwlb-internetFW-design.png)
+### VPC 1 Before and After
+![VPC1 Diagrams](/images/lab2-before-after-VPC1.png)
+
+### Final Architecture
+![endpoint Diagram](/images/lab2-internetFW-design.png)
 
 #### What you will build:
 
