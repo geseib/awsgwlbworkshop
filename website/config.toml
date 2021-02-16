@@ -27,6 +27,9 @@ page = [ "HTML", "AMP"]
 plainIDAnchors = true
 hrefTargetBlank = true
 
+[markup.goldmark.renderer]
+hardWraps = true
+
 [menu]
 
 [[menu.shortcuts]]

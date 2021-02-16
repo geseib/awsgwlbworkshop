@@ -11,18 +11,28 @@ We will use a cloudfromation template that builds out all of the components; cre
 ### Prerequisites ###
 You will need the following in the region you plan to deploy:
 - **S3 bucket** 
-  - Create in deployment region
-    - [us-east-1](https://s3.console.aws.amazon.com/s3/bucket/create?region=us-east-1)
-    - [us-west-2](https://s3.console.aws.amazon.com/s3/bucket/create?region=us-west-2)
-    - [eu-west-1](https://s3.console.aws.amazon.com/s3/bucket/create?region=eu-west-1)
-  - with these files in folder config
-    - [bootstrap.xml](https://seib-paloalto-bootstrap.s3-eu-west-1.amazonaws.com/config/bootstrap.xml)
-    - [init-cfg.txt](https://seib-paloalto-bootstrap.s3-eu-west-1.amazonaws.com/config/init-cfg.txt)
+  - Create bucket with a identifying name in deployment region
+  {{< rawhtml >}}
+  <ul><li><a href="https://s3.console.aws.amazon.com/s3/bucket/create?region=us-east-1" target="_blank">us-east-1 bucket</a></li>
+ <li><a href="https://s3.console.aws.amazon.com/s3/bucket/create?region=us-west-2" target="_blank">us-west-2 bucket</a></li>
+ <li><a href="https://s3.console.aws.amazon.com/s3/bucket/create?region=eu-west-1" target="_blank">eu-west-1 bucket</a>
+  </li></ul>
+{{< /rawhtml >}}
+  - Copy these files in folder config (right click and choose Save Link As...")
+  my_bootstrap_bucket
+    L config
+      L__ [bootstrap.xml](https://seib-paloalto-bootstrap.s3-eu-west-1.amazonaws.com/config/bootstrap.xml)
+      L__ [init-cfg.txt](https://seib-paloalto-bootstrap.s3-eu-west-1.amazonaws.com/config/init-cfg.txt)
+
 - **EC2 key pair** in the region you plan to deploy
-  - [us-east-1](https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=eu-west-1#CreateKeyPair:)
-  - [us-west-2](https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-1#CreateKeyPair:)
-  - [eu-west-1](https://eu-west-1.console.aws.amazon.com/ec2/v2/home?region=eu-west-1#CreateKeyPair:)
-- **Subscibe to the [Palo Alto VMSeries appliance**](https://aws.amazon.com/marketplace/pp/B083LH64T3?ref_=srh_res_product_title)
+  {{< rawhtml >}}
+  <ul><li><a href="https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#CreateKeyPair:" target="_blank">us-east-1 key pair console</a></li>
+ <li><a href="https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#CreateKeyPair:" target="_blank">us-west-2 key pair console</a></li>
+ <li><a href="https://eu-west-1.console.aws.amazon.com/ec2/v2/home?region=eu-west-1#CreateKeyPair:" target="_blank">eu-west-1 key pair console</a>
+  </li></ul>
+{{< /rawhtml >}}
+
+- **Subscibe to the {{< rawhtml >}}<a href="https://aws.amazon.com/marketplace/pp/B083LH64T3?ref_=srh_res_product_title" target="_blank">Palo Alto VMSeries appliance</a>{{< /rawhtml >}}
 
 >(EC2 instances running this image may incur additional software cost per hour. However Palo Alto does offer a **free trial** *Try one unit of this product for 15 days. There will be no software charges for that unit, but AWS infrastructure charges still apply. Free Trials will automatically convert to a paid subscription upon expiration and you will be charged for additional usage above the free units provided.*)
 
