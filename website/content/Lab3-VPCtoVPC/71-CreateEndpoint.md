@@ -58,6 +58,6 @@ _you would repeat this step for every availability zone you wanted to provide en
      ![Create Endpoint](/images/gwlbe-create-gwlbe2.png)
 
 1. You will now have two **GWLB Endpoints** in FWVPC. _The other four endpoints are the GWLBes for VPC1 created in Lab2, and the S3 Gateway endpoints deployed in the security VPC for the firewalls to get their bootstrap files you put into S3_).
-     ![GWLB Endpoint List](/images/gwlbe-list-gwlbe.png)
+     ![GWLB Endpoint List](/images/internal-gwlbe-list.png)
 
 ### You have completed the Create GWLBE Endpoint .
