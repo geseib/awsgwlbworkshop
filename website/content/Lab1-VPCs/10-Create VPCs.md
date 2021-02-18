@@ -12,25 +12,27 @@ We will use a cloudfromation template that builds out all of the components; cre
 You will need the following in the region you plan to deploy:
 - **S3 bucket** 
   - Create bucket with a identifying name in deployment region
-  {{< rawhtml >}}
-  <ul><li><a href="https://s3.console.aws.amazon.com/s3/bucket/create?region=us-east-1" target="_blank">us-east-1 bucket</a></li>
- <li><a href="https://s3.console.aws.amazon.com/s3/bucket/create?region=us-west-2" target="_blank">us-west-2 bucket</a></li>
- <li><a href="https://s3.console.aws.amazon.com/s3/bucket/create?region=eu-west-1" target="_blank">eu-west-1 bucket</a>
-  </li></ul>
-{{< /rawhtml >}}
+
+    {{% button href="https://s3.console.aws.amazon.com/s3/bucket/create?region=us-east-1" icon="fab fa-aws" icon-position="right" %}}Create S3 bucket(us-east-1){{% /button %}}
+<br />
+    {{% button href="https://s3.console.aws.amazon.com/s3/bucket/create?region=us-west-2" icon="fab fa-aws" icon-position="right" %}}Create S3 bucket(us-west-2){{% /button %}}
+<br />
+    {{% button href="https://s3.console.aws.amazon.com/s3/bucket/create?region=eu-west-1" icon="fab fa-aws" icon-position="right" %}}Create S3 bucket(eu-west-1){{% /button %}}
+<br />
   - Copy these files in folder config (right click and choose Save Link As...")
-  my_bootstrap_bucket
-    L config
-      L__ [bootstrap.xml](https://seib-paloalto-bootstrap.s3-eu-west-1.amazonaws.com/config/bootstrap.xml)
-      L__ [init-cfg.txt](https://seib-paloalto-bootstrap.s3-eu-west-1.amazonaws.com/config/init-cfg.txt)
+  *****my_bootstrap_bucket*****
+      L **config**
+          L **[bootstrap.xml](https://seib-paloalto-bootstrap.s3-eu-west-1.amazonaws.com/config/bootstrap.xml)**
+          L **[init-cfg.txt](https://seib-paloalto-bootstrap.s3-eu-west-1.amazonaws.com/config/init-cfg.txt)**
 
 - **EC2 key pair** in the region you plan to deploy
-  {{< rawhtml >}}
-  <ul><li><a href="https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#CreateKeyPair:" target="_blank">us-east-1 key pair console</a></li>
- <li><a href="https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#CreateKeyPair:" target="_blank">us-west-2 key pair console</a></li>
- <li><a href="https://eu-west-1.console.aws.amazon.com/ec2/v2/home?region=eu-west-1#CreateKeyPair:" target="_blank">eu-west-1 key pair console</a>
-  </li></ul>
-{{< /rawhtml >}}
+
+    {{% button href="https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#CreateKeyPair:" icon="fab fa-aws" icon-position="right" %}}Create key pair (us-east-1){{% /button %}}
+<br />
+    {{% button href="https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#CreateKeyPair:" icon="fab fa-aws" icon-position="right" %}}Create key pair(us-west-2){{% /button %}}
+<br />
+    {{% button href="https://eu-west-1.console.aws.amazon.com/ec2/v2/home?region=eu-west-1#CreateKeyPair:" icon="fab fa-aws" icon-position="right" %}}Create key pair(eu-west-1){{% /button %}}
+<br />
 
 - **Subscibe to the {{< rawhtml >}}<a href="https://aws.amazon.com/marketplace/pp/B083LH64T3?ref_=srh_res_product_title" target="_blank">Palo Alto VMSeries appliance</a>{{< /rawhtml >}}
 
@@ -38,9 +40,13 @@ You will need the following in the region you plan to deploy:
 
 1. Click on the CloudFormation Launch link below that corresponds to the AWS Region in which you want to deploy the workshop.
 
-   [![US East (N.Va.)](https://samdengler.github.io/cloudformation-launch-stack-button-svg/images/us-east-1.svg)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-0847cff6598da0a2f)
-   [![US West (Oregon)](https://samdengler.github.io/cloudformation-launch-stack-button-svg/images/us-west-2.svg)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-0f8c3e2c1b7b4bcc9)
-   [![EU West (Ireland)](https://samdengler.github.io/cloudformation-launch-stack-button-svg/images/eu-west-1.svg)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-00ad2b17de74dd860)
+    {{% button href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-0847cff6598da0a2f" icon="fab fa-aws" icon-position="right" %}}Create CloudFormation stack (us-east-1){{% /button %}}
+<br />
+    {{% button href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-0f8c3e2c1b7b4bcc9" icon="fab fa-aws" icon-position="right" %}}Create CloudFormation (us-west-2){{% /button %}}
+<br />
+    {{% button href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-00ad2b17de74dd860" icon="fab fa-aws" icon-position="right" %}}Create CloudFormation (eu-west-1){{% /button %}}
+<br />
+
 
 
 1. Leave the parameters at their defaults, except the EC2 Key Pair (pick the key pair you just created) and the S3 bucket with the bootstrap files. Scroll down to the bottom of the **Quick create stack** screen and check the **I acknowledge that AWS CloudFormation might create IAM resources with custom names.** Click the **Create** button in the lower right.
