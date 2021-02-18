@@ -9,7 +9,7 @@ weight = 72
 We will now have traffic route though out new GWLB Endpoints in **VPC1** to connect to our **Endpoint Service** we just created. In order to have Availability Zone independce, we need to make sure traffic destined for Public Subnet in AZ1 use the GWLB Endpoint in AZ1. This provides workloads  Availability Zone redunandy in a subnet of each Availability Zone we have subnets for this VPC.
 _Remember the VPC Endpoints are created in the VPC that will send traffic to the appliances. In this case firewalls_.
 
-![Endpoint Service](/images/gwlb-VPC1-routingdesign.png)
+![Endpoint Service](/images/lab2-vpc1-routes-diagram.png)
 
 Two things to note:
 - A new route table will be **Edge Associated** to the **IGW**. For the CIDR of each **Public** subnet, we have a route entry pointing to a GWLB Endpoint in the same AZ.

@@ -9,7 +9,7 @@ weight = 71
 We will now create a GWLB Endpoint in **VPC1** to connect to our **Endpoint Service** we just created. This will create Elastic Network Interfaces in a subnet of each Availability Zone we have subnets for this VPC.
 _Remember the VPC Endpoints are created in the VPC that will send traffic to the appliances. In this case firewalls_.
 
-![Endpoint Service](/images/gwlb-internetFW-design.png)
+![Endpoint Service](/images/lab2-gwlbe-diagram.png)
 
 ### Step-by-step
 

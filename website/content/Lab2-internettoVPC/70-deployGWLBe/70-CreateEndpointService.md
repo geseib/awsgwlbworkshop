@@ -1,5 +1,5 @@
 +++
-title = "Create VPC Endpoint Service"
+title = "Create GWLB Endpoint Service"
 chapter = false
 weight = 70
 +++

@@ -8,7 +8,7 @@ weight = 79
 
 Now if we have complete all the steps we should be able to test connectivity across the Palo Altos. You will test using your browser as you did when we first deployed the application using **Cloudformation**
 
-![Flow Diagram](/images/vpc1-fwflow-diagram.png)
+![Flow Diagram](/images/lab2-test-diagram.png)
 
 ### Step-by-step
 
