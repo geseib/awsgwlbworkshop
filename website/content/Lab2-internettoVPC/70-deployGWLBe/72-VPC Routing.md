@@ -73,12 +73,4 @@ Two things to note:
      ![Create Endpoint](/images/gwlbe-pubBrt-routes.png)
 
 
-
-1. Click the **Close** button once the **Endpoint ** has been created.
-
-1. Repeat the above steps only this time uncheck the first Availability Zone, and select the FW subnet in the second Availability zone for VPC1.
-_you would repeat this step for every availability zone you wanted to provide endpoints_.
-
-     ![Create Endpoint](/images/gwlbe-create-gwlbe2.png)
-
-### You have completed the Create GWLBE Endpoint .
+### You have completed the Create GWLBE Endpoint.
