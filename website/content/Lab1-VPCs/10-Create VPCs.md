@@ -38,13 +38,14 @@ You will need the following in the region you plan to deploy:
 
 >(EC2 instances running this image may incur additional software cost per hour. However Palo Alto does offer a **free trial** *Try one unit of this product for 15 days. There will be no software charges for that unit, but AWS infrastructure charges still apply. Free Trials will automatically convert to a paid subscription upon expiration and you will be charged for additional usage above the free units provided.*)
 
+#### Deploy Cloudformation Stack
 1. Click on the CloudFormation Launch link below that corresponds to the AWS Region in which you want to deploy the workshop.
 
-    {{% button href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-0847cff6598da0a2f" icon="fab fa-aws" icon-position="right" %}}Create CloudFormation stack (us-east-1){{% /button %}}
+    {{% button href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?stackName=gwlblab&templateURL=https://gwlb-resourcesbucket-1ad6ln1ib92aa.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-0847cff6598da0a2f" icon="fab fa-aws" icon-position="right" %}}Create CloudFormation stack (us-east-1){{% /button %}}
 <br />
-    {{% button href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-0f8c3e2c1b7b4bcc9" icon="fab fa-aws" icon-position="right" %}}Create CloudFormation (us-west-2){{% /button %}}
+    {{% button href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/review?stackName=gwlblab&templateURL=https://gwlb-resourcesbucket-1ad6ln1ib92aa.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-0f8c3e2c1b7b4bcc9" icon="fab fa-aws" icon-position="right" %}}Create CloudFormation (us-west-2){{% /button %}}
 <br />
-    {{% button href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?stackName=gwlblab&templateURL=https://{{<codebucket>}}.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-00ad2b17de74dd860" icon="fab fa-aws" icon-position="right" %}}Create CloudFormation (eu-west-1){{% /button %}}
+    {{% button href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?stackName=gwlblab&templateURL=https://gwlb-resourcesbucket-1ad6ln1ib92aa.s3.amazonaws.com/networkingdemos-gwlbworkshop.yml&param_VMSeriesAMI=ami-00ad2b17de74dd860" icon="fab fa-aws" icon-position="right" %}}Create CloudFormation (eu-west-1){{% /button %}}
 <br />
 
 
