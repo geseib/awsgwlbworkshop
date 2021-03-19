@@ -1,37 +1,29 @@
 +++
-title = "Default VPC"
+title = "Intro to GWLB"
 chapter = false
 weight = 21
 +++
 
-## Default VPC
 
-In every region there is a default VPC. In the us-east-1 region it will have 6 subnets across 6 Availability Zones.
+## How Does GWLB send traffic to the right appliance
 
-![Default VPC](/images/defaultvpc_diagram.png)
+GWLB will pick a target base on a five-tuple hash, which means GWLB picks the backend target  based on these five components contained in every IP packet: 
+- IP Protocol (for example TCP)
+- Source IP address (for example 54.11.48.21)
+- Source Port (for example 54001)
+- Destination IP address (for example 10.1.2.113)
+- Destination Port (for example 80 for HTTP)
 
-1. Open the **Amazon VPC** console and from the left menu select **Your VPCs**.
-   .
-   ![Your VPCs](/images/defaultvpc_yourvpcs.png)
+GWLB will send the packet to same target for the return traffic as well. It would look like this:
+- IP Protocol (for example TCP)
+- Source IP address (for example 10.1.2.113)
+- Source Port (for example 80 )
+- Destination IP address (for example 54.11.48.21)
+- Destination Port (for example 54001)
 
-1. Take a look at the **default VPC**. It is using CIDR **172.31.0.0/16**.
+Its important to call out that if the same two hosts are talking on two different sets of ports, they could be routed through two different appliances. 
 
-   ![Your VPCs](/images/vpc-default-subnets.png)
+## Genenve Encapsulation
+By encapsulating the traffic to the target, GWLB can provide seperation and some addition information about which GWLBe the traffic came from. This allows the return traffic to also go back to the correct GWLBe. 
 
-1. From the menu on the left select **Subnets**. Take a look at the **default VPC**'s subnets.
-
-   ![Your VPCs](/images/vpc-default-routes.png)
-
-1. From the menu on the left select **Route Tables**. Below the list, click on the **Routes** tab. Take a look at the **default VPC**'s route table. There is the local VPC route for 172.31.0.0/16 and a default route 0.0.0.0/0 targeting the Internet Gateway. _All of the subnets in the default VPC are public subnets!_
-
-   ![Your VPCs](/images/vpc-default-igw.png)
-
-1. From the menu on the left select **Internet Gateways**.  See that it is in a State **attached**. _When we create an Internet Gateway, we want to make sure to attach it to our VPC_.
-
-
-## You have completed the Default VPC tour
-Now that you have looked around a bit, it's time to build a VPC. 
-
-
-
-
+For more details, read Milind Kularni's Blog, [Integrate your custom logic or appliance with AWS Gateway Load Balancer](https://aws.amazon.com/blogs/networking-and-content-delivery/integrate-your-custom-logic-or-appliance-with-aws-gateway-load-balancer/)
