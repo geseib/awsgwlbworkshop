@@ -35,7 +35,8 @@ Just so it easily veirifed that the traffic is making its way via the firewalls,
 - In order to push these changes to the running Policies, click the **Commit** button at the top right of the console page. 
 - Repeat these steps for the second appliance using a unique identifier for its header insertion. ***Note: be sure to Commit the changes for them to take effect***
 
-#### Now if you browse to the VPC1 website using the URL provided in the Cloudformation Outputs, you will see the IP address of the Firewall that processesed the connection in the Palo Alto header information.
-
+#### Verify
+Now if you browse to the VPC1 website using the URL provided in the Cloudformation Outputs, you will see the IP address of the Firewall that processesed the connection in the Palo Alto header information.
+![Verify Header](/images/PA-header-ip.png)
 
 ### You have completed the Monitoring overview.
