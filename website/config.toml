@@ -41,3 +41,6 @@ weight = 30
 name = "<i class='fas fa-envelope'></i> Have questions?"
 url = "mailto:tgwworkshop@amazon.com"
 weight = 40
+
+[minify]
+  disableHTML = true
