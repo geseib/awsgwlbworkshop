@@ -35,7 +35,7 @@ Once you are done exploring the aspects of Gateway Load Balancers, Endpoints, GE
   - From the **VPC** console select **Endpoints** from the left menu.
   - Select the ***stack_name*-FWVPC-GWLBe-AZA** Endpoint from the list and from the **Action** menu select **Delete endpoint**.
   - Select the ***stack_name*-FWVPC-GWLBe-AZB** Endpoint from the list and from the **Action** menu select **Delete endpoint**.
-#### Remove the Endpointm Service
+#### Remove the Endpoint Service
 - Remove the Endpoint Service for the Gateway Load Balancer
   - From the **VPC** console select **Endpoint Services** from the left menu.
   - Select the Endpoint Service, type **GatewayLoadBalancer** *(should he the only one)* from the list and from the **Action** menu select **Delete**.
