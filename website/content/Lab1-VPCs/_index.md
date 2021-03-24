@@ -8,7 +8,7 @@ weight = 20
 
 This lab sets up the environment and shows some of the basic networking aspects of a internet-facing load-balanced application in an **Amazon Virtual Private Cloud (VPC)**.
 
-We will  deploy two VPCs for applications, an Internet-facing load balanced application in 1 VPC, a VPC with 2 Palo Alto VMSeries firewall appliances, and the Transit Gateway. All this with a few clicks using **AWS Cloudformation**. You will then verify the internet app and connect to an EC2 instance and verify connectivity to the between via the VPCs.
+We will  deploy two VPCs for applications, an Internet-facing load balanced application in 1 VPC, a VPC with 2 Palo Alto VMSeries firewall appliances, and the Transit Gateway. All this with a few clicks using **AWS Cloudformation**. You will then verify the internet app and connect to an EC2 instance and verify connectivity between the VPCs.
 
 ![TGW and VPCs Diagram](/images/gwlb-tgwfw-start.png)
 

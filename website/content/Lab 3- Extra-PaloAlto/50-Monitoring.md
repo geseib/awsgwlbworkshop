@@ -5,7 +5,9 @@ weight = 50
 +++
 
 ### Monitoring
-We can take a look at the traffic that reaches the firewall and understand what action (allow/deny), what rule caused the action
+We can take a look at the traffic that reaches the firewall and understand what action (allow/deny), what rule caused the action, and what interface the traffic came into the firewall.
+
+####Step-by-Step
 - Find out your IP address, by browsing to the VPC1 Web Application. Remember its behind a Load balancer. It will indicate your IP address as the **Remote ip**. Record that, 
 ![VPC 1 Website](/images/test-PA-header.png)
 - Switch to the **Monitor** tab at the top
@@ -14,7 +16,7 @@ We can take a look at the traffic that reaches the firewall and understand what 
 
 
 ### Modifying the Header from the Palo Alto
-Just so it easily veirifed that the traffic is making its way via the firewalls, we are creating a header **PaloAlto**, this could easily be a more complex key, so that applications can be certain that traffic coming to them have made there way through the firewall. As an extra verfication that the routing policy hasnt been mistakenly changed.
+Just so it easily veirifed that the traffic is making its way via the firewalls, we are creating a header **PaloAlto**, this could easily be a more complex key, so that applications can be certain that traffic coming to them have made there way through the firewall, and only respond when to traffic that has been inspected by a security device. This can be an extra verfication to the app servers the routing policy hasnt been mistakenly changed.
 
 #### Step-by-step
 - From the Palo ALto admin Browser console, let's look at the **Policies** by selecting the **Policies** tab and looking at the **Security** policy rules.

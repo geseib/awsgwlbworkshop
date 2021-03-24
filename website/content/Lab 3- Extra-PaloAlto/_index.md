@@ -1,5 +1,5 @@
 +++
-menutitle = "Extra-Palo Alto"
+menutitle = "Lab 3: Palo Alto"
 chapter = false
 weight = 50
 +++
