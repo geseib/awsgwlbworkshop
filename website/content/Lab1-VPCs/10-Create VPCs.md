@@ -6,7 +6,7 @@ weight = 10
 
 ## Launch Template
 
-We will use a cloudfromation template that builds out all of the components; creating a Trasnit Gateway, 2 VPCs, subnets, gateways, and two aEC2 instances. This type of Infrastrucutre as code can create consistent repeatable configurations, as well as provide a faster path to production.
+We will use a cloudformation template that builds out all of the components; creating a Transit Gateway, 2 VPCs, subnets, gateways, and two aEC2 instances. This type of Infrastructure as code can create consistent repeatable configurations, as well as provide a faster path to production.
 
 ### Prerequisites ###
 You will need the following in the region you plan to deploy:

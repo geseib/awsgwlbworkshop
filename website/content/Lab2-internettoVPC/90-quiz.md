@@ -7,15 +7,15 @@ weight = 90
 {{< quizdown >}}
 # GWLB 1
 
-For Resiliency we deploy two Gateway Load Balancers
+For Resiliency, we deploy two Gateway Load Balancers that point to the same target appliances.
 
-> This changes what any firewall inbetween would see
+> Endpoints and Gateway load balancers deploy across Availability Zones differently.
 
 
-- [ ] At the Subnet where the resource (ENI) is located.
-- [x] The Internet Gateway (IGW)
-- [ ] The Elastic Network Interface of the resource
-- [ ] It doesn't. Elastic IPs are assigned as Public IPs to the ENI along with the Private IP.
+- [x] No, you deploy just one Gateway Load Balancer, but you must specify subnets from at least two Availability Zones to increase the availability of your load balancer. 
+- [ ] No, you deploy just one Gateway Load balancer as it is a Regional service and Availability ZOne independent. 
+- [ ] No. Every Availability Zone that has targets in it should have a Gateway Load Balancer deployed in it.
+- [ ] Yes. For resiliency, deploy two Gateway Load Balancers.
 
 # GWLB 2
 

@@ -6,14 +6,14 @@ weight = 72
 
 ## Modify VPC1 Routing
 
-We will now have traffic route though out new GWLB Endpoints in **VPC1** to connect to our **Endpoint Service** we just created. In order to have Availability Zone independce, we need to make sure traffic destined for Public Subnet in AZ1 use the GWLB Endpoint in AZ1. This provides workloads  Availability Zone redunandy in a subnet of each Availability Zone we have subnets for this VPC.
+We will now have traffic route though out new GWLB Endpoints in **VPC1** to connect to our **Endpoint Service** we just created. In order to have Availability Zone independence, we need to make sure traffic destined for Public Subnet in AZ1 use the GWLB Endpoint in AZ1. This provides workloads  Availability Zone redundancy in a subnet of each Availability Zone we have subnets for this VPC.
 _Remember the VPC Endpoints are created in the VPC that will send traffic to the appliances. In this case firewalls_.
 
 ![Endpoint Service](/images/lab2-vpc1-routes-diagram.png)
 
 Two things to note:
 - A new route table will be **Edge Associated** to the **IGW**. For the CIDR of each **Public** subnet, we have a route entry pointing to a GWLB Endpoint in the same AZ.
-- Each **Public** Subnet has a route table that points the default route (0.0.0.0/0) to a GWLB Endpoint in the same AZ). _normally public subnets point their defualt routes to the IGW_.
+- Each **Public** Subnet has a route table that points the default route (0.0.0.0/0) to a GWLB Endpoint in the same AZ). _normally public subnets point their default routes to the IGW_.
 
 ### Step-by-step
 
@@ -25,7 +25,7 @@ Two things to note:
 
    ![GWLB Endpoint List](/images/gwlbe-list-gwlbe.png))
 
-1. In the details panel below, get the Availability Zone and ID of each of the GWLB **Endpoints**. If you named them, you can see it in the table, otherwise you can click the Subnets tab and note the Availability ZOne to the right of the Subnet ID. _be sure to get both endpoints, one for each **Availability Zone**_.
+1. In the details panel below, get the Availability Zone and ID of each of the GWLB **Endpoints**. If you named them, you can see it in the table, otherwise you can click the Subnets tab and note the Availability Zone to the right of the Subnet ID. _Be sure to get both endpoints, one for each **Availability Zone**_.
 
 #### Edge Route table
 
@@ -65,7 +65,7 @@ Two things to note:
 1. Switch to the **Routes** tab for the first Public route table and click **Edit routes** button
      ![Routes tab](/images/gwlbe-pubArt-routes.png)
 
-1. Delete the igw **Target** for the defualt (0.0.0.0/0) route and select the GWLB Endpoint in the same AZ. __recorded above from the **Endpoints** console_. Click the **Save routes** button. 
+1. Delete the igw **Target** for the default (0.0.0.0/0) route and select the GWLB Endpoint in the same AZ. __recorded above from the **Endpoints** console_. Click the **Save routes** button. 
      ![Create Endpoint](/images/gwlbe-pubA-addroutes.png)
 
 1. Repeat the above 3 steps with **Public B Route Table**

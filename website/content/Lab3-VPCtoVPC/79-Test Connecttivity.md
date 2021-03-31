@@ -20,7 +20,7 @@ Now if we have complete all the steps we should be able to test connectivity acr
 
    ![connect session manager](/images/gwlb-ssm-connect.png)
 
-1. Click the tab **Session Manager** and click the **Connect** button. _this will bring up a new browser tab with the Linux bash shell_
+1. Click the tab **Session Manager** and click the **Connect** button. _This will bring up a new browser tab with the Linux bash shell_
 
    ![curl VPC2 Server](/images/gwlb-curlvpc1server.png)
 
