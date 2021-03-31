@@ -9,7 +9,7 @@ weight = 13
 
 At what point does the address translation take place between a resource, such as an EC2 instance's Elastic IP (EIP) and its private IP address
 
-> This changes what any firewall inbetween would see
+> This changes what any firewall in between would see
 
 
 - [ ] At the Subnet where the resource (ENI) is located.
@@ -19,7 +19,7 @@ At what point does the address translation take place between a resource, such a
 
 # VPC 2
 
-The NAT Gateways is deployed in a single Subnet with all Private subnets, across Availability Zones, having default routes (0.0.0.0/0) pointing to the NAT Gateway. Is this best practice?
+The NAT Gateways is deployed in a single Public Subnet with routing for all Private subnets, across Availability Zones, having default routes (0.0.0.0/0) pointing to the NAT Gateway. Is this best practice?
 
 > Availability ZOne Independence is well architected
 

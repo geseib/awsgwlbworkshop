@@ -19,11 +19,14 @@ You will need the following in the region you plan to deploy:
 <br />
     {{% button href="https://s3.console.aws.amazon.com/s3/bucket/create?region=eu-west-1" icon="fab fa-aws" icon-position="right" %}}Create S3 bucket(eu-west-1){{% /button %}}
 <br />
-  - Copy these files in folder config (right click and choose Save Link As...")
+  - Copy these files locally to your computer (right click and choose Save Link As..."), and then upload them to S3 in folder config as such:
   *****my_bootstrap_bucket*****
       L **config**
           L **[bootstrap.xml](https://seib-paloalto-bootstrap.s3-eu-west-1.amazonaws.com/config/bootstrap.xml)**
           L **[init-cfg.txt](https://seib-paloalto-bootstrap.s3-eu-west-1.amazonaws.com/config/init-cfg.txt)**
+    *Be sure to verify that the files are uploaded to the folder **config** and not the root of the bucket.*
+    
+
 
 - **EC2 key pair** in the region you plan to deploy
 

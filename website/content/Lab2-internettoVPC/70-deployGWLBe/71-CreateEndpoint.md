@@ -33,7 +33,7 @@ _(if not completed previously)_
 
 1. Configure the **VPC Endpoint** with the following selections:
 
-   - For **Service Catagory** select **Find service by name**.
+   - For **Service Category** select **Find service by name**.
    - For the **Service Name** Paste in the **Endpoint Service** name recorded above _(or in previous task)_ It will look something like this: **com.amazonaws.vpce.us-east-1.vpce-svc-0a37cf83d4fd5876c**.
    - Click the **Verify** button. You should see **Service name found.** Otherwise, you back and make sure you recorded the correct name.
 
@@ -46,7 +46,7 @@ _(if not completed previously)_
    - Uncheck the Second **Availability Zone**
    - Click **new tag** button
      - **Key**: Type **Name** _use upper case 'N', as its case sensitive_
-     - **Vaule**: Name your VPC Endpoint something like **VPC1-GWLBEtoFWVPC-GWLB**
+     - **Value**: Name your VPC Endpoint something like **VPC1-GWLBEtoFWVPC-GWLB-*azA***
    - Click the **Create endpoint** in the bottom right.
 
 

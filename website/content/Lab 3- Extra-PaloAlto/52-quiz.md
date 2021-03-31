@@ -27,4 +27,5 @@ In the workshop we seperated out the traffic between the VPC1 endpoints and the 
 - [x] Place the subinterfaces in different zones and apply unique security policys to each zone
 - [ ] Be Sure to NAT the addresses in each VPC or at the GWLB to unqie IP addresses to identify them to a specific security policy
 - [ ] You cant. You have to use a new deployment of GWLB and GWLB Endpoints for overlapping CIDRs
+
 {{< /quizdown >}}

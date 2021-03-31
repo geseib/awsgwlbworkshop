@@ -12,7 +12,7 @@ This workshop shows some of the basic networking aspects of using a Gateway Load
 
 Within your own AWS account, you can explore how to direct traffic  through a fleet of Security Appliances.
 
-We will explore two Architectual patterns: Distributed Ingress/Egress for Internet to VPC traffic and VPC to VPC internal traffic. Both with centralized security.
+We will explore two Architectural patterns: Distributed Ingress/Egress for Internet to VPC traffic and VPC to VPC internal traffic. Both with centralized security.
 
 #### Distributed Internet Ingress/Egress
 ![GWLB for Internet traffic](/images/gwlb-welcome-distributed.png)

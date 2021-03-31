@@ -6,7 +6,7 @@ weight = 70
 
 ## Overivew: Create Gateway Load Balancer Endpoint Service
 
-We will create a Gateway Load Balancer Endpoint Service to make our GWLB availabile to accept endbound traffic for sources in the same region.  We could even share to VPCs in other AWS accounts. _Remember the GWLB **Endpoint Services** are created in the VPC that has the GWLB_.
+We will create a Gateway Load Balancer Endpoint Service to make our GWLB available to accept inbound traffic for sources in the same region.  We could even share to VPCs in other AWS accounts. _Remember the GWLB **Endpoint Services** are created in the VPC that has the GWLB_.
 
 ![Endpoint Service](/images/gwlbe-diagram.png)
 
@@ -19,9 +19,9 @@ We will create a Gateway Load Balancer Endpoint Service to make our GWLB availab
 
 1. Configure the **VPC Endpoint Service** with the following selections:
     - **Associate Load Balancer**: check to box next to the GWLB created earlier, named  ***stackName*** **-FWVPC-FWs**. _be sure not to pick the NLB_.
-    - Notice the **Included** and **Excluded Availability Zones**. _When sharing to other accounts it is a good practice to place the GWLB in all Availability Zones to provide complete access no matter which Availiablity Zones the consumer VPCs are in. This may mean creating more subnets in the security VPC and using **cross zone load balancing**_.
+    - Notice the **Included** and **Excluded Availability Zones**. _When sharing to other accounts it is a good practice to place the GWLB in all Availability Zones to provide complete access no matter which Availability Zones the consumer VPCs are in. This may mean creating more subnets in the security VPC and using **cross zone load balancing**_.
     - Uncheck the **Require acceptance for endpoint**, so you do not have accept the VPC Endpoint when the consumer VPCs create them. 
-    - Uncheck **Enable private DNS name**. _This is a great feature to automate creation of the DNS entry along with the Endpoint creation for the consumers. It requires proof of domain ownership. We dont have a real public DNS domain to use for the lab._
+    - Uncheck **Enable private DNS name**. _This is a great feature to automate creation of the DNS entry along with the Endpoint creation for the consumers. It requires proof of domain ownership. We don't have a real public DNS domain to use for the lab._
     - Click the **Add Tag**: button and give it a tag with the **Key** as **Name** and the **Value** as something like ***stackName*** **-FWVPC-GWLBes**
     - Click the **Create service** button to finish
 

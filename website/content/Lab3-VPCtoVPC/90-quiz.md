@@ -14,7 +14,7 @@ Can you send traffic directly to the Gateway Load Balancer, or do you always nee
 
 - [ ] Gateway Load Balancer Endpoints are only needed when deploying without a Transit Gateway.
 - [x] Always use Gateway Load Balancer Endpoints. As This provides the key information 
-- [ ] If you have only local VPC trafic you can use the Gateway Load Balancer without provisioning Gateway Load Balancer Endpoints.
+- [ ] If you have only local VPC traffic you can use the Gateway Load Balancer without provisioning Gateway Load Balancer Endpoints.
 
 # TGW 2
 
@@ -22,9 +22,9 @@ Why do we need to modify the VPC attachment on the TGW to use appliance mode?
 
 > Think stateful inspection and symmetric flow
 
-- [x] To assure that the same gateway Load balancer Availabilty Zone gets the entire flow and send traffic symmterically through the same appliance instance.
-- [ ] Appliance mode is only needed if you devices are not Gateway Loadbalancer aware.
-- [ ] To ensure that the GENEVE protocol is included across the Transit Gatway.
+- [x] To assure that the same gateway Load balancer Availability Zone gets the entire flow and send traffic symmetrically through the same appliance instance.
+- [ ] Appliance mode is only needed if you devices are not Gateway Load Balancer aware.
+- [ ] To ensure that the GENEVE protocol is included across the Transit Gateway.
 - [ ] Increase the largest frame size supported across the Transit Gateway
 
 {{< /quizdown >}}
