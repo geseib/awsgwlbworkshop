@@ -37,16 +37,16 @@ _(if not completed previously)_
    - For the **Service Name** Paste in the **Endpoint Service** name recorded above _(or in previous task)_ It will look something like this: **com.amazonaws.vpce.us-east-1.vpce-svc-0a37cf83d4fd5876c**.
    - Click the **Verify** button. You should see **Service name found.** Otherwise, you back and make sure you recorded the correct name.
 
-     ![Create Endpoint](/images/gwlbe-create-gwlbe.png)
+     ![Create Endpoint](/images/lab3-create-gwlbe.png)
 
 1. Scroll down and Configure the **VPC Endpoint** with the following selections:
 
    - For **VPC** select the FWVPC from the dropdown list.
-   - This should bring up the two Availability zones already checked. Change the first **Availability Zone** **Subnet ID** to the GWLBe subnets _unlike other VPC Endpoints, We can only configure 1 Availability Zone at a time, so we will uncheck one of the subnets. We will repeat this step for the other AZ_.
+   - This should bring up the two Availability zones already checked. Change the first **Availability Zone** **Subnet ID** to the GWLBe subnets, they will be labeled something like ***stackname*-FWVPC-GWLBE-AZx** _unlike other VPC Endpoints, We can only configure 1 Availability Zone at a time, so we will uncheck one of the subnets. We will repeat this step for the other AZ_.
    - Uncheck the Second **Availability Zone**
    - Click **new tag** button
      - **Key**: Type **Name** _use upper case 'N', as its case sensitive_
-     - **Vaule**: Name your VPC Endpoint something like **FWVPC-GWLBEtoFWVPC-GWLB**
+     - **Vaule**: Name your VPC Endpoint something like **FWVPC-GWLBEtoFWVPC-GWLB-azA**
    - Click the **Create endpoint** in the bottom right.
 
 
